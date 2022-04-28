@@ -17,6 +17,10 @@ app.get('/songs', db.getAllSongs);
 
 app.post('/songs', db.addSong);
 
+app.get('/artists', db.getAllArtists);
+
+app.post('/artists', db.addArtist);
+
 app.delete('/songs/:song_id', db.deleteSongById);
 
 app.put('/songs/:song_id', db.updateSongNameById);

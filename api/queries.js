@@ -19,12 +19,42 @@ const getAllSongs = (req, res) => {
     })
 }
 
+const getAllArtists = (req, res) => {
+    pool.query('SELECT * FROM artists', (error, result) => {
+        if(error){
+            throw error;
+        }
+        res.status(200).json(result.rows);
+    })
+}
+
+
 const addSong = (req, res) => {
     try {
         const { song_name, artist, duration, play_count, track_listing } = req.body;
         pool.query(
             `INSERT INTO songs (song_name, artist, duration, play_count, track_listing) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
             [song_name, artist, duration, play_count, track_listing],
+            (error, results) => {
+                if (error) {
+                    console.log(error, '<--- error here')
+                    throw error;
+                }
+                console.log(results, "<--- result!")
+                res.status(200).json(results.rows)
+            }
+        );
+    } catch (e) {
+        console.log("ERROR CAUGHT! " + err.message)
+    }
+};
+
+const addArtist = (req, res) => {
+    try {
+        const { name, age, img } = req.body;
+        pool.query(
+            `INSERT INTO artists (name, age, img)VALUES ($1, $2, $3) RETURNING *`,
+            [name, age, img],
             (error, results) => {
                 if (error) {
                     console.log(error, '<--- error here')
@@ -85,5 +115,7 @@ module.exports = {
     addSong,
     getAllSongs,
     deleteSongById,
-    updateSongNameById
+    updateSongNameById,
+    getAllArtists,
+    addArtist
 }
