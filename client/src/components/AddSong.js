@@ -1,38 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { addSong } from './networkRequests';
 
-class AddSong extends React.Component {
-    state = {
-       song_name: "",
-       artist: "",
-       duration: "",
-       track_listing: "" 
+// class AddSong extends React.Component {
+export default function AddSong(props) {
+    const [state, setState] = useState({
+        song_name: "",
+        artist: "",
+        duration: "",
+        track_listing: ""
+    });
+
+    const handleChange = (e) => {
+        setState({...state, [e.target.name]: e.target.value });
     }
 
-    handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
+    const onClick = () => {
+        addSong(state);
     }
 
-    onClick = () => {
-        addSong(this.state);
+    const submitSong = () => {
+        addSong(state)
+            .then(refresh);
     }
 
-    render(){
-        return(
-            <div className="add-song-wrap">
-                <h1>Add Song!</h1>
-                <label>Song name: </label>
-                <input onChange={this.handleChange} name="song_name"></input>
-                <label>Artist: </label>
-                <input onChange={this.handleChange} name="artist"></input>
-                <label>Duration: </label>
-                <input onChange={this.handleChange} name="duration"></input>
-                <label>Track Listing: </label>
-                <input onChange={this.handleChange} name="track_listing"></input>
-                <button onClick={this.onClick}>Submit</button>
-            </div>
-        )
-    }
-}
+     const refresh = () => {
+        // to do make this dynamic! 
+        setState({
+        song_name: "",
+        artist: "",
+        duration: "",
+        track_listing: ""
+        });
+        props.refresh();
+     }
+    return (
+        <div className="add-song-wrap">
+            <h1>Add Song!</h1>
+            {/* need to use state because that is where the data is comoing from */}
+            {/* array.map */
+            Object.keys(state).map(key => <>
+            <label>{key}</label>
+            <input onChange={handleChange} name={key} value={state[key]} ></input> 
+            </>)};
+            
+            
+            
+            <button onClick={submitSong}>Submit</button>
+        </div>
+    )
+};
 
-export default AddSong;
+

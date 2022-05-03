@@ -5,9 +5,7 @@ import Welcome from './components/Welcome';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import './App.css';
 
-class App extends React.Component {
-
-  render(){
+  export default function App(){
     return (
       <div className="App">
         <BrowserRouter>
@@ -35,6 +33,5 @@ class App extends React.Component {
       </div>
     );
   }
-}
 
-export default App;
+
