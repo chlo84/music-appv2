@@ -25,6 +25,15 @@ app.delete('/songs/:song_id', db.deleteSongById);
 
 app.put('/songs/:song_id', db.updateSongNameById);
 
+app.get('/:tableName',  db.getAllRows);
+
+app.post('/:tableName',  db.createRow);
+
+app.put('/:tableName', db.updateRow);
+
+// delete / delete
+app.delete('/:tableName/:id', db.deleteRowById);
+
 app.listen(port, () => {
     console.log(`App running on ${port}...`)
 });

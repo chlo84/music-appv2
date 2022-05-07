@@ -1,52 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { addArtist } from './networkRequests';
 
-class AddArtist extends React.Component {
-    state = {
-       name: "",
-       age: "",
-       img:""
-       
+export default function AddArtist(props) {
+    const [state, setState] = useState({
+        name: "",
+        age: "",
+        img: ""
+    });
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value });
     }
 
-    handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
+    const submitArtist = () => {
+        addArtist(state)
+            .then(refresh);
     }
 
-    onClick = () => {
-        addArtist(this.state);
+    
+    const refresh = () => {
+        setState({
+            name: "",
+            age: "",
+            img: ""
+        });
+    
+    
+        props.refresh();
     }
 
-    render(){
-        return(
-            
-            <div className="add-artist-wrap">
-     
-                <h1>Add Artist</h1>
-     
-                 <label>Artist: </label>
-     
-                 <input onChange={this.handleChange} value={this.state.name} name="name"></input>
-     
-                 <label>Age: </label>
-     
-                 <input onChange={this.handleChange} value={this.state.age} name="age"></input>
-     
-                 <label>Image: </label>
-     
-                 <input onChange={this.handleChange} value={this.state.img} name="img"></input>
-     
-                 <button onClick={this.onClick}>Submit</button>
-     
-                </div>
-     
-            )
-     
-        }
-     
-     }
+    return (
+
+        <div className="add-song-wrap">
+            <h1>Add Artist</h1>
+            {/* Need to use state because thats where the data is
+            Array.map*/
+                Object.keys(state).map(key => <>
+                    <label>{key}</label>
+                    <input onChange={handleChange} name={key} value={state[key]} />
+                </>)}
+            <button onClick={submitArtist}>Submit</button>
+        </div>
+
+    )
+
+}
 
 
-      
 
-export default AddArtist;
+
+
+
