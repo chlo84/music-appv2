@@ -1,76 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import { addSong, getAllArtists } from './networkRequests';
+import { addSong, getAllFromTable } from './networkRequests';
 
-// class AddSong extends React.Component {
-export default function AddSong(props) {
+export default function AddSong(props){
+    // internal memory for this component
     const [state, setState] = useState({
         name: "",
-        artistId: "",
         duration: "",
         play_count: "",
         img: ""
-    });
-    const [artists, setArtists] = useState([])
+     });
 
-    useEffect(() => {
-        getAllArtists().then(res => {
-            setArtists(res);
-        });
-    }, [])
+     const [artists, setArtists] = useState([])
+     useEffect(() => {
+         getAllFromTable('artists')
+            .then(res => setArtists(res))
+     }, []);
 
-    console.log(artists)
 
     const handleChange = (e) => {
-        setState({ ...state, [e.target.name]: e.target.value });
+        setState({...state, [e.target.name]: e.target.value });
     }
 
     const submitSong = () => {
-        console.log(state)
         addSong(state)
             .then(refresh);
     }
 
     const refresh = () => {
-        // to do make this dynamic instead of statically resetting! 
+        // $todo make this dyanmic isntead of statically resetting
+
+        // after adding a song we want to make sure to clear the inputs so a user can add another song
         setState({
             name: "",
-            artistId: "",
             duration: "",
             play_count: "",
             img: ""
         });
+
+        // props are attributes passed from parent components into child components
+        // after submitting a new song we need the users list of songs to update so they can see the new song
         props.refresh();
     }
-    return (
+
+    return(
         <div className="add-song-wrap">
             <h1>Add Song!</h1>
-            {/* need to use state because that is where the data is comoing from */}
-            {/* array.map */
-                Object.keys(state).map(key => {
-                    if (key === 'artistId') {
-                        return (
-                            <div key={key}>
-                                <label>Artist</label>
-                                <select onChange={handleChange} name='artistId' value={state.artistId}>
-                                    <option value=''></option>
-                                    {artists.map(artist => {
-                                        return <option value={artist.id}>{artist.name}</option>
-                                    })}
-                                </select>
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <div key={key}>
-                                <label>{key}</label>
-                                <input onChange={handleChange} name={key} value={state[key]} />
-                            </div>
-                        )
-                    }
-                })}
+            <label>Artist: </label>
+            <select onChange={handleChange} name='artistId'>
+                {/* <option value='1' name='artistId'>Jay Z</option> */}
+                {artists.map(artist => <option key={artist.id} value={artist.id}>{artist.name}</option>)}
+            </select>
+           {/* Need to use state because thats where the data is
+            Array.map*/
+            Object.keys(state).map(columnName => columnName !== 'artistId' && <div key={columnName}>
+                <label>{columnName}</label>
+                <input onChange={handleChange} name={columnName} value={state[columnName]}/>
+            </div>)}
+            
             <button onClick={submitSong}>Submit</button>
         </div>
     )
 }
-
-

@@ -1,5 +1,4 @@
-require('dotenv').config()
-
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const db = require('./queries.js');
@@ -13,22 +12,21 @@ app.get('/', (req, res) => {
     res.json({ info: "Hello there"});
 })
 
-app.get('/songs', db.getAllSongs);
+// app.get('/songs', db.getAllSongs);
 
-app.post('/songs', db.addSong);
+// app.post('/songs', db.addSong);
 
-app.get('/artists', db.getAllArtists);
+// app.delete('/songs/:song_id', db.deleteSongById);
 
-app.post('/artists', db.addArtist);
+// app.put('/songs/:song_id', db.updateSongNameById);
 
-app.delete('/songs/:song_id', db.deleteSongById);
+// read / get
+app.get('/:tableName', db.getAllRows); 
 
-app.put('/songs/:song_id', db.updateSongNameById);
+// create / post
+app.post('/:tableName', db.createRow);
 
-app.get('/:tableName',  db.getAllRows);
-
-app.post('/:tableName',  db.createRow);
-
+// update / put
 app.put('/:tableName', db.updateRow);
 
 // delete / delete
