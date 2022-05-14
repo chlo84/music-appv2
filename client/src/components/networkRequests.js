@@ -1,5 +1,5 @@
-export const api = "https://d2w9pt4x5agp6w.cloudfront.net";
-
+// export const api = "http://ec2-52-90-129-233.compute-1.amazonaws.com:3030";
+export const api = "http://localhost:3030";
 export const getAllSongs = async () => {
     const songs = await fetch(`${api}/songs`);
     return songs.json();
