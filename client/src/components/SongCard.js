@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { updateRowInTable } from './networkRequests';
+import { deleteRowInTable, updateRowInTable } from './networkRequests';
 
 export default function SongCard(props){
     // deserialize value of song from props
@@ -26,6 +26,10 @@ export default function SongCard(props){
     const handleChange = (e) => {
         setData({...data, [e.target.name]: e.target.value });
     }
+    const deleteSongClick = () => {
+        deleteRowInTable('songs', song.id)
+            .then(props.refresh) 
+    }
     
     // when we click the song we want to start editing
     return <li key={song.id}>
@@ -39,6 +43,7 @@ export default function SongCard(props){
             </div>)}
             <button onClick={updateSongClick}>Submit</button>
             <button onClick={toggleEdit}>Cancel</button>
+            <button onClick= {deleteSongClick}>Delete</button>
         </>}
     </li>
 }

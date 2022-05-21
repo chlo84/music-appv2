@@ -63,3 +63,14 @@ export const updateRowInTable = async (table, data) => {
         console.log("Caught Error!! " + error)
     }
 }
+export const deleteRowInTable = async (table, id) =>{
+    try {
+        const holdResponse = await fetch(`${api}/${table}/${id}`, {
+            method: "DELETE",
+            
+        });
+        return holdResponse;
+    } catch(error){
+        console.log("Caught Error!! " + error)
+    }
+}

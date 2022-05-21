@@ -61,7 +61,7 @@ const createRow = (req, res) => {
             }
         );
     } catch (e) {
-        console.log("ERROR CAUGHT! " + err.message)
+        console.log("ERROR CAUGHT! " + e.message)
     }
 };
 
@@ -92,7 +92,7 @@ const updateRow = (req, res) => {
             }
         );
     } catch (e) {
-        console.log("ERROR CAUGHT! " + err.message)
+        console.log("ERROR CAUGHT! " + e.message)
     }
 };
 
@@ -104,14 +104,14 @@ const deleteRowById = (req, res) => {
     const query = `DELETE FROM ${req.params.tableName} WHERE id = ${req.params.id}`;
     console.log(query);
     try{
-        pool.query(query, values, (error, results) => {
+        pool.query(query, (error, results) => {
             if (error) {
                 throw error;
             }
             res.status(200).json(results.rows)
         });
     } catch (e) {
-        console.log("ERROR CAUGHT! " + err.message)
+        console.log("ERROR CAUGHT! " + e.message)
     }
     
 }
@@ -132,7 +132,7 @@ const addSong = (req, res) => {
             }
         );
     } catch (e) {
-        console.log("ERROR CAUGHT! " + err.message)
+        console.log("ERROR CAUGHT! " + e.message)
     }
 };
 
@@ -162,7 +162,7 @@ const addArtist = (req, res) => {
             }
         );
     } catch (e) {
-        console.log("ERROR CAUGHT! " + err.message)
+        console.log("ERROR CAUGHT! " + e.message)
     }
 };
 
@@ -220,5 +220,5 @@ module.exports = {
     updateRow,
     deleteRowById,
     getAllArtists,
-    addArtist
+    addArtist    
 }
